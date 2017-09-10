@@ -1,0 +1,15 @@
+############### JetBrains IDE folder
+
+.idea
+.idea/
+.idea/*
+
+############### Node Modules
+
+node_modules
+node_modules/
+node_modules/*
+
+############### NPM Debug Log
+
+npm-debug.log

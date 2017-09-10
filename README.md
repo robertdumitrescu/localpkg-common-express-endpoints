@@ -1,2 +1,2 @@
-# localpkg-common-express-endpoints
+# localpkg-generic-endpoints
 Health-check endpoints for express apps

@@ -31,19 +31,19 @@ class AppInfoIsAliveController {
     static getEndpoints(app) {
 
         app = Lodash.clone(app);
-
-        let route = {};
         let routes = [];
 
         app._router.stack.forEach(function(middleware){
             if(middleware.route){ // routes registered directly on the app
-                routes.push(middleware.route);
+                let route = {};
                 route.path = middleware.route.path;
                 route.method = Object.keys(middleware.route.methods)[0];
                 routes.push(route);
             } else if(middleware.name === 'router'){ // router middleware
                 middleware.handle.stack.forEach(function(handler){
-                    route.path = handler.route.path;
+                    console.log(handler);
+                    let route = {};
+                    route.path = Lodash.clone(handler.route).path;
                     route.method = Object.keys(handler.route.methods)[0];
                     routes.push(route);
                 });

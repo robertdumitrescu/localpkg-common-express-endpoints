@@ -10,6 +10,7 @@ const prettysize = require("prettysize");
 const prettyMs = require('pretty-ms');
 const usage = require('usage');
 const Q = require('q');
+const Lodash = require('lodash');
 
 
 class AppInfoIsAliveController {
@@ -28,6 +29,8 @@ class AppInfoIsAliveController {
     }
 
     static getEndpoints(app) {
+
+        app = Lodash.clone(app);
 
         let route, routes = [];
 

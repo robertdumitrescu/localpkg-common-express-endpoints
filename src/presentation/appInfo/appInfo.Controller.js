@@ -40,7 +40,6 @@ class AppInfoIsAliveController {
             } else if(middleware.name === 'router'){ // router middleware
                 middleware.handle.stack.forEach(function(handler){
                     route = handler.route;
-                    delete route.stack;
                     route && routes.push(route);
                 });
             }

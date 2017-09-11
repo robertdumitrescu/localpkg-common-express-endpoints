@@ -7,6 +7,16 @@ const morgan = require('morgan');
 
 let app = express();
 
+var router = express.Router();
+
+router.get("/bar", function(req,res,next){
+    res.send('bar');
+});
+
+app.use("/",router);
+
+
+
 app.use(morgan('dev'));
 
 /** Controllers */

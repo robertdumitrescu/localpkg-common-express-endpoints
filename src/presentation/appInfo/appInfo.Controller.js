@@ -32,15 +32,17 @@ class AppInfoIsAliveController {
 
         app = Lodash.clone(app);
 
-        let route, routes = [];
+        let route = {};
+        let routes = [];
 
         app._router.stack.forEach(function(middleware){
             if(middleware.route){ // routes registered directly on the app
                 routes.push(middleware.route);
             } else if(middleware.name === 'router'){ // router middleware
                 middleware.handle.stack.forEach(function(handler){
-                    route = handler.route;
-                    route && routes.push(route);
+                    route.path = handler.route.path;
+                    route.method = Object.keys(handler.route.methods)[0];
+                    routes.push(route);
                 });
             }
         });

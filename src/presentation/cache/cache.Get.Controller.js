@@ -10,7 +10,7 @@ const Lodash = require('lodash');
 
 
 class CacheGetController {
-    static get(mcache) {
+    static async get(mcache) {
 
         let successResponseDomainModel = {
             status: 200,

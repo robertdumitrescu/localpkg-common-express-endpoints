@@ -15,6 +15,13 @@ const endpoints = {
             code: 8000,
             description: 'TO BE COMPLETED',
             typeOfAuth: 'Implicit'
+        },
+        get: {
+            partialUri: '/cache',
+            method: 'DELETE',
+            code: 8000,
+            description: 'TO BE COMPLETED',
+            typeOfAuth: 'Implicit'
         }
     }
 };

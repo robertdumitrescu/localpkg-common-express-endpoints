@@ -5,16 +5,16 @@ const express = require('express');
 const router = express.Router();
 const endpoints = require('../../../configs/common/endpoints');
 
-class CacheGetController {
-    static async get(mcache) {
+class CacheDeleteController {
+    static async hardDelete(mcache) {
 
         let successResponseDomainModel = {
             status: 200,
         };
 
-        successResponseDomainModel.data = {
-            cachedRequests: mcache.exportJson()
-        };
+        let x = mcache.clear();
+
+        successResponseDomainModel.x = x;
 
         return successResponseDomainModel;
     }
@@ -22,11 +22,11 @@ class CacheGetController {
 
 function argumentWrapper(app, mcache) {
 
-    const endpointAddress = "/api" + endpoints.cache.get.partialUri;
+    const endpointAddress = "/api" + endpoints.cache.delete.partialUri;
 
     return router.get(endpointAddress, function (request, response) {
 
-        CacheGetController.get(mcache)
+        CacheDeleteController.delete(mcache)
             .then(function (successResponseGenericModel) {
 
                 response.status(successResponseGenericModel.status).send(successResponseGenericModel);

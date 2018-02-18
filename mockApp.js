@@ -15,12 +15,12 @@ router.get("/bar", function(req,res,next){
 
 app.use("/",router);
 
-
-
 app.use(morgan('dev'));
 
 /** Controllers */
 let ContentsCreateController = require('./src/presentation/appInfo/appInfo.Controller')(app);
+
+
 app.use('/', ContentsCreateController);
 
 // set the view engine to ejs

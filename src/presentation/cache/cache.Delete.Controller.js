@@ -24,9 +24,9 @@ function argumentWrapper(app, mcache) {
 
     const endpointAddress = "/api" + endpoints.cache.delete.partialUri;
 
-    return router.get(endpointAddress, function (request, response) {
+    return router.delete(endpointAddress, function (request, response) {
 
-        CacheDeleteController.delete(mcache)
+        CacheDeleteController.hardDelete(mcache)
             .then(function (successResponseGenericModel) {
 
                 response.status(successResponseGenericModel.status).send(successResponseGenericModel);

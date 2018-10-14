@@ -26,6 +26,7 @@
     "pretty-ms": "^3.0.0",
     "prettysize": "^0.1.0",
     "q": "^1.4.1",
+    "cors": "^2.8.4",
     "usage": "^0.7.1"
   },
   "devDependencies": {

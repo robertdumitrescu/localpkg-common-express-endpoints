@@ -1,24 +1,24 @@
-"use strict";
+'use strict';
 
-/** NPM packages*/
+/** NPM packages */
 const express = require('express');
 const router = express.Router();
 const endpoints = require('../../../configs/common/endpoints');
 const osUtils = require('os-utils');
 const os = require('os');
-const prettysize = require("prettysize");
+const prettysize = require('prettysize');
 const prettyMs = require('pretty-ms');
 const usage = require('usage');
 const Q = require('q');
 const Lodash = require('lodash');
 
 
-class AppInfoIsAliveController {
+class AppStateIsAliveController {
 
     static usageLookup(pid) {
         let deferred = Q.defer();
 
-        usage.lookup(pid, function (err, result) {
+        usage.lookup(pid, (err, result) => {
             if (err) {
                 deferred.reject(new Error(error));
             }
@@ -28,20 +28,34 @@ class AppInfoIsAliveController {
         return deferred.promise;
     }
 
+    static getProcessData() {
+
+        let result = {};
+        result.nodeVersion = process.version;
+        result.pid = process.pid;
+        result.release = process.release;
+        result.title = process.title;
+        result.uId = process.getuid();
+        result.hrtime = process.hrtime();
+        result.uptime = Math.floor(process.uptime());
+
+        return result;
+
+    }
+
     static getEndpoints(app) {
 
         app = Lodash.clone(app);
         let routes = [];
 
-        app._router.stack.forEach(function(middleware){
-            if(middleware.route){ // routes registered directly on the app
+        app._router.stack.forEach((middleware) => {
+            if (middleware.route) { // routes registered directly on the app
                 let route = {};
                 route.path = middleware.route.path;
                 route.method = Object.keys(middleware.route.methods)[0];
                 routes.push(route);
-            } else if(middleware.name === 'router'){ // router middleware
-                middleware.handle.stack.forEach(function(handler){
-                    console.log(handler);
+            } else if (middleware.name === 'router') { // router middleware
+                middleware.handle.stack.forEach((handler) => {
                     let route = {};
                     route.path = Lodash.clone(handler.route).path;
                     route.method = Object.keys(handler.route.methods)[0];
@@ -62,7 +76,7 @@ class AppInfoIsAliveController {
 
         successResponseDomainModel.data = {};
 
-        if (request.query.systemInfo === "true") {
+        if (request.query.systemInfo !== 'false') {
 
             let osCPUs = os.cpus();
 
@@ -86,9 +100,9 @@ class AppInfoIsAliveController {
             };
         }
 
-        if (request.query.processInfo === "true") {
+        if (request.query.processInfo !== 'false') {
 
-            let processUsage = await AppInfoIsAliveController.usageLookup(process.pid);
+            let processUsage = await AppStateIsAliveController.usageLookup(process.pid);
 
             successResponseDomainModel.data.nodeInstance = {
                 processId: process.pid,
@@ -97,34 +111,38 @@ class AppInfoIsAliveController {
                 usedCPUPercentage: processUsage.cpu,
                 uptime: osUtils.processUptime(),
                 uptimeReadable: prettyMs(osUtils.processUptime() * 1000)
-            }
+            };
         }
 
-        if (request.query.endpoints === "true") {
+        if (request.query.endpoints !== 'false') {
 
-            let endpoints = await AppInfoIsAliveController.getEndpoints(app);
+            let endpoints = await AppStateIsAliveController.getEndpoints(app);
 
             successResponseDomainModel.data.endpoints = endpoints;
         }
 
+        if (request.query.processData !== 'false') {
+
+            let processData = AppStateIsAliveController.getProcessData();
+
+            successResponseDomainModel.data.processData = processData;
+        }
 
         return successResponseDomainModel;
     }
 }
 
-function argumentWrapper(app) {
+function argumentWrapper(app, endpointAddress) {
 
-    const endpointAddress = "/api" + endpoints.appInfo.isAlive.partialUri;
+    return router.get(endpointAddress, (request, response) => {
 
-    return router.get(endpointAddress, function (request, response) {
-
-        AppInfoIsAliveController.process(request, app)
-            .then(function (successResponseGenericModel) {
+        AppStateIsAliveController.process(request, app)
+            .then((successResponseGenericModel) => {
 
                 response.status(successResponseGenericModel.status).send(successResponseGenericModel);
 
             })
-            .catch(function (errorResponseGenericModel) {
+            .catch((errorResponseGenericModel) => {
                 console.log(errorResponseGenericModel);
                 response.status(errorResponseGenericModel.status).send(errorResponseGenericModel);
             });

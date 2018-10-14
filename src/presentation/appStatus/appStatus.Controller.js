@@ -4,26 +4,27 @@
 const express = require('express');
 const router = express.Router();
 
-class CacheDeleteController {
-    static async hardDelete(mcache) {
+class AppStatusController {
+
+    static async process(request, app) {
 
         let successResponseDomainModel = {
             status: 200,
         };
 
-        let x = mcache.clear();
+        successResponseDomainModel.data = {};
 
-        successResponseDomainModel.x = x;
+        successResponseDomainModel.data.statusMessage = 'Alive';
 
         return successResponseDomainModel;
     }
 }
 
-function argumentWrapper(app, mcache, endpointAddress) {
+function argumentWrapper(app, endpointAddress) {
 
-    return router.delete(endpointAddress, (request, response) => {
+    return router.get(endpointAddress, (request, response) => {
 
-        CacheDeleteController.hardDelete(mcache)
+        AppStatusController.process(request, app)
             .then((successResponseGenericModel) => {
 
                 response.status(successResponseGenericModel.status).send(successResponseGenericModel);

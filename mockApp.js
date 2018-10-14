@@ -1,7 +1,6 @@
-"use strict";
+'use strict';
 
 const express = require('express');
-const path = require('path');
 const morgan = require('morgan');
 
 
@@ -9,25 +8,27 @@ let app = express();
 
 var router = express.Router();
 
-router.get("/bar", function(req,res,next){
+router.get('/bar', (req, res, next) => {
     res.send('bar');
 });
 
-app.use("/",router);
+app.use('/', router);
 
 app.use(morgan('dev'));
 
 /** Controllers */
-let ContentsCreateController = require('./src/presentation/appInfo/appInfo.Controller')(app);
+let AppStateController = require('./src/presentation/appState/appState.Controller')(app, '/appState');
+let MachineStateController = require('./src/presentation/machineState/machineState.Controller')(app, '/machineState');
+let AppStatusController = require('./src/presentation/appStatus/appStatus.Controller')(app, '');
 
 
-app.use('/', ContentsCreateController);
+app.use('/', AppStateController);
+app.use('/', MachineStateController);
+app.use('/', AppStatusController);
 
-// set the view engine to ejs
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
 
-let server = app.listen(3000, function () {
+let server = app.listen(3000, () => {
 
     let host = server.address().address;
     let port = server.address().port;

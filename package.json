@@ -19,21 +19,22 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "localpkg-generic-helper": "git+ssh://git@github.com/robertdumitrescu/localPKG-generic-helper.git",
     "lodash": "^4.16.3",
     "morgan": "^1.7.0",
     "os-utils": "0.0.14",
     "pretty-ms": "^3.0.0",
     "prettysize": "^0.1.0",
-    "localpkg-generic-helper": "git+ssh://git@github.com/robertdumitrescu/localPKG-generic-helper.git",
     "q": "^1.4.1",
     "usage": "^0.7.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "cors": "^2.8.4",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "sinon": "^2.3.8",
     "nyc": "^11.0.2",
+    "sinon": "^2.3.8",
     "supertest": "^3.0.0"
   },
   "nyc": {

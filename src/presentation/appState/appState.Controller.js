@@ -11,6 +11,7 @@ const prettyMs = require('pretty-ms');
 const usage = require('usage');
 const Q = require('q');
 const Lodash = require('lodash');
+var cors = require('cors');
 
 
 class AppStateIsAliveController {
@@ -76,29 +77,6 @@ class AppStateIsAliveController {
 
         successResponseDomainModel.data = {};
 
-        if (request.query.systemInfo !== 'false') {
-
-            let osCPUs = os.cpus();
-
-            successResponseDomainModel.data.sytem = {
-                platform: osUtils.platform() + ' ' + os.hostname() + ' Arch: ' + os.arch() + ' Kernel: ' + os.release(),
-                ram: {
-                    total: osUtils.totalmem(),
-                    totalReadable: prettysize(parseInt(osUtils.totalmem() * 1024 * 1024)),
-                    free: osUtils.freemem(),
-                    freeReadable: prettysize(parseInt(osUtils.freemem() * 1024 * 1024)),
-                    usedPercentage: 100 - ((osUtils.freemem() * 100) / osUtils.totalmem())
-                },
-                cpu: {
-                    name: osCPUs[0].model,
-                    count: osCPUs.length
-                },
-                uptime: {
-                    system: osUtils.sysUptime(),
-                    systemReadable: prettyMs(osUtils.sysUptime() * 1000)
-                }
-            };
-        }
 
         if (request.query.processInfo !== 'false') {
 
@@ -134,7 +112,7 @@ class AppStateIsAliveController {
 
 function argumentWrapper(app, endpointAddress) {
 
-    return router.get(endpointAddress, (request, response) => {
+    return router.get(endpointAddress, cors(), (request, response) => {
 
         AppStateIsAliveController.process(request, app)
             .then((successResponseGenericModel) => {

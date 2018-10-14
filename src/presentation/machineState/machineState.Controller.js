@@ -10,8 +10,9 @@ const prettysize = require('prettysize');
 const prettyMs = require('pretty-ms');
 const usage = require('usage');
 const Q = require('q');
+var cors = require('cors');
 const Lodash = require('lodash');
-const GenericFilesHelper = require('localpkg-generic-helper').genericFilesHelper;
+const GenericFilesHelper = require('localpkg-generic-helper').GenericFilesHelper;
 
 
 class MachineStateController {
@@ -28,7 +29,7 @@ class MachineStateController {
 
             let osCPUs = os.cpus();
 
-            successResponseDomainModel.data.sytem = {
+            successResponseDomainModel.data.system = {
                 platform: osUtils.platform() + ' ' + os.hostname() + ' Arch: ' + os.arch() + ' Kernel: ' + os.release(),
                 ram: {
                     total: osUtils.totalmem(),
@@ -50,22 +51,15 @@ class MachineStateController {
 
         if (request.query.machineSetupInfo !== 'false') {
 
-            let directoryPaths = [
-                'logs',
-                '~/.ssh',
-                'node_modules',
-            ];
-            let directoryMetadata = [];
-
-            let x = await GenericFilesHelper.listFilesAndDetails('logs');
-            let y = await GenericFilesHelper.listFilesAndDetails('~/.ssh');
-            let z = await GenericFilesHelper.listFilesAndDetails('node_modules');
-
+            console.log(request.query.ptv);
+            let vp = []; // vp - verified paths
+            for (let ptvi = 0; ptvi < request.query.ptv.length; ptvi++){
+                let verifedPath = await GenericFilesHelper.listFilesAndDetails(request.query.ptv[ptvi]);
+                vp.push(verifedPath);
+            }
 
             successResponseDomainModel.data.machineSetup = {};
-            successResponseDomainModel.data.machineSetup.x = x;
-            successResponseDomainModel.data.machineSetup.y = y;
-            successResponseDomainModel.data.machineSetup.z = z;
+            successResponseDomainModel.data.machineSetup.vp = vp;
         }
 
 
@@ -75,7 +69,7 @@ class MachineStateController {
 
 function argumentWrapper(app, endpointAddress) {
 
-    return router.get(endpointAddress, (request, response) => {
+    return router.get(endpointAddress, cors(), (request, response) => {
 
         MachineStateController.process(request, app)
             .then((successResponseGenericModel) => {

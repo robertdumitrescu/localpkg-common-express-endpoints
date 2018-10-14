@@ -13,3 +13,23 @@ node_modules/*
 ############### NPM Debug Log
 
 npm-debug.log
+
+############### package-lock.json
+
+package-lock.json
+
+############### NYC debug/log/tracking
+
+.nyc_output
+.nyc_output/
+.nyc_output/*
+
+############### Test coverages
+
+coverage
+coverage/
+coverage/*
+
+############### App logs
+
+logs/*.log

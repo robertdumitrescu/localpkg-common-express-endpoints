@@ -3,6 +3,7 @@
 /** NPM packages */
 const express = require('express');
 const router = express.Router();
+var cors = require('cors');
 
 class AppStatusController {
 
@@ -14,7 +15,7 @@ class AppStatusController {
 
         successResponseDomainModel.data = {};
 
-        successResponseDomainModel.data.statusMessage = 'Alive';
+        successResponseDomainModel.data.statusMessage = 'Online';
 
         return successResponseDomainModel;
     }
@@ -22,7 +23,7 @@ class AppStatusController {
 
 function argumentWrapper(app, endpointAddress) {
 
-    return router.get(endpointAddress, (request, response) => {
+    return router.get(endpointAddress, cors(), (request, response) => {
 
         AppStatusController.process(request, app)
             .then((successResponseGenericModel) => {
@@ -34,7 +35,6 @@ function argumentWrapper(app, endpointAddress) {
                 console.log(errorResponseGenericModel);
                 response.status(errorResponseGenericModel.status).send(errorResponseGenericModel);
             });
-
     });
 }
 

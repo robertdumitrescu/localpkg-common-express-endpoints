@@ -53,7 +53,7 @@ class MachineStateController {
 
             console.log(request.query.ptv);
             let vp = []; // vp - verified paths
-            for (let ptvi = 0; ptvi < request.query.ptv.length; ptvi++){
+            for (let ptvi = 0; ptvi < request.query.ptv.length; ptvi++) {
                 let verifedPath = await GenericFilesHelper.listFilesAndDetails(request.query.ptv[ptvi]);
                 vp.push(verifedPath);
             }

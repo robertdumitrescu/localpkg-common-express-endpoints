@@ -19,7 +19,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "localpkg-generic-helper": "git+ssh://git@github.com/robertdumitrescu/localPKG-generic-helper.git",
+    "localpkg-core": "git+ssh://git@github.com/robertdumitrescu/localpkg-core.git",
     "lodash": "^4.16.3",
     "morgan": "^1.7.0",
     "os-utils": "0.0.14",

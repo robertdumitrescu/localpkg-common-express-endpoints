@@ -12,7 +12,7 @@ const usage = require('usage');
 const Q = require('q');
 var cors = require('cors');
 const Lodash = require('lodash');
-const GenericFilesHelper = require('localpkg-generic-helper').GenericFilesHelper;
+const FilesHelper = require('localpkg-core').FilesHelper;
 
 
 class MachineStateController {
@@ -54,7 +54,7 @@ class MachineStateController {
             console.log(request.query.ptv);
             let vp = []; // vp - verified paths
             for (let ptvi = 0; ptvi < request.query.ptv.length; ptvi++) {
-                let verifedPath = await GenericFilesHelper.listFilesAndDetails(request.query.ptv[ptvi]);
+                let verifedPath = await FilesHelper.listFilesAndDetails(request.query.ptv[ptvi]);
                 vp.push(verifedPath);
             }
 
